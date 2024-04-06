@@ -1,0 +1,23 @@
+SELECT
+    CASE 
+        WHEN MONTH(start_date) = 1 THEN 'Jan'
+        WHEN MONTH(start_date) = 2 THEN 'Feb'
+        WHEN MONTH(start_date) = 3 THEN 'Mar'
+        WHEN MONTH(start_date) = 4 THEN 'Apr'
+        WHEN MONTH(start_date) = 5 THEN 'May'
+        WHEN MONTH(start_date) = 6 THEN 'Jun'
+        WHEN MONTH(start_date) = 7 THEN 'Jul'
+        WHEN MONTH(start_date) = 8 THEN 'Aug'
+        WHEN MONTH(start_date) = 9 THEN 'Sep'
+        WHEN MONTH(start_date) = 10 THEN 'Oct'
+        WHEN MONTH(start_date) = 11 THEN 'Nov'
+        WHEN MONTH(start_date) = 12 THEN 'Dec'
+    END AS Month,
+     SUM(CASE WHEN YEAR(start_date) = 2022 THEN 1 ELSE 0 END) AS Count_2022,
+    SUM(CASE WHEN YEAR(start_date) = 2023 THEN 1 ELSE 0 END) AS Count_2023,
+    ( SUM(CASE WHEN YEAR(start_date) = 2023 THEN 1 ELSE 0 END)-SUM(CASE WHEN YEAR(start_date) = 2022 THEN 1 ELSE 0 END))as Diff_2023_sub_2022
+FROM job_schedule
+WHERE YEAR(start_date) IN (2022, 2023)
+AND webschedulerstatus IN (12, 18)
+GROUP BY MONTH(start_date)
+ORDER BY Month(start_date);
